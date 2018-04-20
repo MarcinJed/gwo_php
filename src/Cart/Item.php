@@ -1,16 +1,26 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Gwo\Recruitment\Cart;
 
 use Gwo\Recruitment\Cart\Exception\QuantityTooLowException;
+use Gwo\Recruitment\Entity\Product;
 
+/**
+ * Klasa Item
+ */
 class Item
 {
     public $product;
     public $quantity;
     public $totalPrice;
     
-    public function __construct($product, $quantity)
+    /**
+     * @param Product $product Produkt
+     * @param int $quantity Ilosc
+     */
+    public function __construct(Product $product, int $quantity)
     {
         if ($product) {
             if ($product->getMinimumQuantity() > $quantity) {
@@ -23,17 +33,26 @@ class Item
         }
     }
     
+    /**
+     * @return Product
+     */
     public function getProduct()
     {
         return $this->product;
     }
     
+    /**
+     * @return int
+     */
     public function getQuantity()
     {
         return $this->quantity;
     }
     
-    public function setQuantity($quantity)
+    /**
+     * @param int quantity
+     */
+    public function setQuantity(int $quantity)
     {
         if ($this->product->getMinimumQuantity() > $quantity) {
             throw new QuantityTooLowException();
@@ -43,11 +62,18 @@ class Item
         }
     }
     
+    /**
+     * getTotalPrice
+     * @return float
+     */
     public function getTotalPrice()
     {
         return $this->totalPrice;
     }
     
+    /**
+     * (quantity * price)
+     */
     public function setTotalPrice()
     {
         $this->totalPrice = ($this->quantity * $this->product->getUnitPrice());

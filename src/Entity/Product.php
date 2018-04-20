@@ -1,9 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Gwo\Recruitment\Entity;
 
 use InvalidArgumentException;
 
+/**
+ * Klasa Product
+ */
 class Product
 {
     public $id;
@@ -12,21 +17,32 @@ class Product
     
     public function __construct()
     {
+        //set default minimum quantity
         $this->setMinimumQuantity(1);
     }
     
-    public function setId($id)
+    /**
+     * @param int $id
+     * @return \Gwo\Recruitment\Entity\Product
+     */
+    public function setId(int $id)
     {
         $this->id = $id;
         return $this;
     }
     
+    /**
+     * @return int
+     */
     public function getId()
     {
         return $this->id;
     }
     
-    public function setUnitPrice($unitPrice)
+    /**
+     * @param float $unitPrice
+     */
+    public function setUnitPrice(float $unitPrice)
     {
         if ($unitPrice>0) {
             $this->unitPrice = $unitPrice;
@@ -35,12 +51,18 @@ class Product
         }
     }
     
+    /**
+     * @return float
+     */
     public function getUnitPrice()
     {
         return $this->unitPrice;
     }
     
-    public function setMinimumQuantity($minimumQuantity = 1)
+    /**
+     * @param int $minimumQuantity
+     */
+    public function setMinimumQuantity(int $minimumQuantity = 1)
     {
         if ($minimumQuantity>0) {
             $this->minimumQuantity = $minimumQuantity;
@@ -49,6 +71,9 @@ class Product
         }
     }
     
+    /**
+     * @return int
+     */
     public function getMinimumQuantity()
     {
         return $this->minimumQuantity;

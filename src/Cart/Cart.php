@@ -1,25 +1,41 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Gwo\Recruitment\Cart;
 
 use Gwo\Recruitment\Cart\Item;
+use Gwo\Recruitment\Entity\Product;
 use OutOfBoundsException;
 
+/**
+ * Klasa Cart
+ */
 class Cart
 {
     public $items;
     public $totalPrice;
     
+    /**
+     * @return Item
+     */
     public function getItems()
     {
         return $this->items;
     }
     
+    /**
+     * Return sum of items price
+     * @return float
+     */
     public function getTotalPrice()
     {
         return $this->totalPrice;
     }
     
+    /**
+     * Sum of items price
+     */
     public function setTotalPrice()
     {
         $totalPrice = 0;
@@ -29,7 +45,7 @@ class Cart
         $this->totalPrice = $totalPrice;
     }
     
-    public function getItem($num)
+    public function getItem(int $num)
     {
         if (empty($this->items[$num])) {
             throw new OutOfBoundsException();
@@ -38,10 +54,14 @@ class Cart
         }
     }
     
-    public function setQuantity($product, $quantity)
+    /**
+     * @param Product $product
+     * @param int $quantity
+     */
+    public function setQuantity(Product $product, int $quantity)
     {
         $change = false;
-        if (!empty($this->items)) {
+        if ($this->isNotEmptyItems()) {
             foreach ($this->items as $item) {
                 if ($item->getProduct() == $product) {
                     $item->setQuantity($quantity);
@@ -56,10 +76,16 @@ class Cart
         }
     }
     
-    public function addProduct($product, $quantity)
+    /**
+     * add product (change quantity if exist)
+     * @param Product $product
+     * @param int $quantity
+     * @return \Gwo\Recruitment\Cart\Cart
+     */
+    public function addProduct(Product $product, int $quantity)
     {
         $add = false;
-        if (!empty($this->items)) {
+        if ($this->isNotEmptyItems()) {
             foreach ($this->items as $item) {
                 if ($item->getProduct() == $product) {
                     $itemQuantity = $item->getQuantity();
@@ -77,7 +103,10 @@ class Cart
         return $this;
     }
     
-    public function removeProduct($product)
+    /**
+     * @param Product $product
+     */
+    public function removeProduct(Product $product)
     {
         $items = [];
         if (!empty($this->items)) {
@@ -87,8 +116,17 @@ class Cart
                 }
             }
         }
-
+            
         $this->items = $items;
         $this->setTotalPrice();
+    }
+    
+    /**
+     * Return true if items not empty
+     * @return bool
+     */
+    public function isNotEmptyItems()
+    {
+        return !empty($this->items);
     }
 }
